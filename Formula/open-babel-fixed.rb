@@ -26,6 +26,7 @@ class OpenBabelFixed < Formula
 
   def install
     system "cmake", "-S", ".", "-B", "build",
+                    "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
                     "-DINCHI_INCLUDE_DIR=#{Formula["inchi"].opt_include}/inchi",
                     "-DOPENBABEL_USE_SYSTEM_INCHI=ON",
                     "-DRUN_SWIG=ON",
