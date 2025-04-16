@@ -2,7 +2,7 @@ class OpenBabelFixed < Formula
   desc "Chemical toolbox"
   homepage "https://github.com/openbabel/openbabel"
   license "GPL-2.0-only"
-  revision 1
+  revision 2
   head "https://github.com/jakobandersen/openbabel.git", branch: "fixed"
 
   depends_on "cmake" => :build
@@ -23,6 +23,7 @@ class OpenBabelFixed < Formula
   end
 
   conflicts_with "surelog", because: "both install `roundtrip` binaries"
+  conflicts_with "open-babel", because: "we are an updated version of it"
 
   def install
     system "cmake", "-S", ".", "-B", "build",
