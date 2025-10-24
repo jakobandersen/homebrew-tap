@@ -26,15 +26,20 @@ class OpenBabelFixed < Formula
   conflicts_with "open-babel", because: "we are an updated version of it"
 
   def install
-    system "cmake", "-S", ".", "-B", "build",
-                    "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
-                    "-DINCHI_INCLUDE_DIR=#{Formula["inchi"].opt_include}/inchi",
-                    "-DOPENBABEL_USE_SYSTEM_INCHI=ON",
-                    "-DRUN_SWIG=ON",
-                    "-DPYTHON_BINDINGS=ON",
-                    "-DPYTHON_EXECUTABLE=#{which(python3)}",
-                    "-DPYTHON_INSTDIR=#{prefix/Language::Python.site_packages(python3)}",
-                    *std_cmake_args
+    args = %W[
+      -DINCHI_INCLUDE_DIR=#{Formula["inchi"].opt_include}/inchi
+      -DOPENBABEL_USE_SYSTEM_INCHI=ON
+      -DRUN_SWIG=ON
+      -DPYTHON_BINDINGS=ON
+      -DPYTHON_EXECUTABLE=#{which(python3)}
+      -DPYTHON_INSTDIR=#{prefix/Language::Python.site_packages(python3)}
+    ]
+
+    # Workaround to build with CMake 4
+    args << "-DCMAKE_POLICY_VERSION_MINIMUM=3.5"
+    inreplace "CMakeLists.txt", "cmake_policy(SET CMP0042 OLD)",
+                                "cmake_policy(SET CMP0042 NEW)"
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end
