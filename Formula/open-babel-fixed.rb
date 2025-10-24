@@ -40,8 +40,8 @@ class OpenBabelFixed < Formula
 
     # Workaround to build with CMake 4
     args << "-DCMAKE_POLICY_VERSION_MINIMUM=3.5"
-    inreplace "CMakeLists.txt", "cmake_policy(SET CMP0042 OLD)",
-                                "cmake_policy(SET CMP0042 NEW)"
+    #inreplace "CMakeLists.txt", "cmake_policy(SET CMP0042 OLD)",
+    #                            "cmake_policy(SET CMP0042 NEW)"
     system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
